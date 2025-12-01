@@ -78,6 +78,31 @@ app.get("/students", async (req: Request, res: Response) => {
   }
 });
 
+app.get("/students/:id", async (req: Request, res: Response) => {
+  try {
+    const result = await pool.query(`SELECT * FROM students WHERE id= $1`, [
+      req.params.id,
+    ]);
+    if (result.rows.length === 0) {
+      res.status(404).json({
+        success: false,
+        message: "student not found",
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "Single student found",
+        data: result.rows[0],
+      });
+    }
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
