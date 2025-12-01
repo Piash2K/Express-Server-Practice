@@ -23,12 +23,43 @@ const initDB = async () => {
         updated_at TIMESTAMP DEFAULT NOW()
         )
         `);
+  await pool.query(`
+            CREATE TABLE IF NOT EXISTS information(
+            id SERIAL PRIMARY KEY,
+            student_id INT REFERENCES students(id) ON DELETE CASCADE,
+            class VARCHAR(20) NOT NULL,
+            roll VARCHAR(10) NOT NULL,
+            completed_study BOOLEAN DEFAULT false,
+            due_date DATE,
+            created_at TIMESTAMP DEFAULT NOW(),
+            updated_at TIMESTAMP DEFAULT NOW()
+            )
+            `);
 };
 initDB();
 
 app.get("/", (req: Request, res: Response) => {
-  const result = req.body;
   res.send("Hello From Express Server Practice");
+});
+
+app.post("/students", async (req: Request, res: Response) => {
+  const { name, email, age } = req.body;
+  try {
+    const result = await pool.query(
+      `INSERT INTO students(name,email,age) VALUES($1, $2, $3) RETURNING *`,
+      [name, email, age]
+    );
+    res.status(200).json({
+      success: true,
+      message: "Successfully posted to DB",
+      data: result.rows[0],
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 });
 
 app.listen(port, () => {
