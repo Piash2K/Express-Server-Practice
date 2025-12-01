@@ -103,6 +103,33 @@ app.get("/students/:id", async (req: Request, res: Response) => {
   }
 });
 
+app.put("/students/:id", async (req: Request, res: Response) => {
+  const { name, email, age } = req.body;
+  try {
+    const result = await pool.query(
+      `UPDATE students SET name=$1, email=$2, age= $3 WHERE id=$4 RETURNING *`,
+      [name, email, age, req.params.id]
+    );
+    if (result.rows.length === 0) {
+      res.status(404).json({
+        success: false,
+        message: "Student Not Found",
+      });
+    } else {
+      res.status(201).json({
+        success: true,
+        message: "Student updated successfully",
+        data: result.rows[0],
+      });
+    }
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
