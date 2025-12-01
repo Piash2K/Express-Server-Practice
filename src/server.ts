@@ -62,6 +62,22 @@ app.post("/students", async (req: Request, res: Response) => {
   }
 });
 
+app.get("/students", async (req: Request, res: Response) => {
+  try {
+    const result = await pool.query(`SELECT * FROM students`);
+    res.status(200).json({
+      success: true,
+      message: "All students fetched successfully",
+      data: result.rows,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
