@@ -95,11 +95,6 @@ Feel free to open a PR or submit an issue.
 
 ---
 
-## 📜 License
-
-This project is licensed under the **ISC License**.
-
----
 
 ## 💬 Feedback
 
