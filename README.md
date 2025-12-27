@@ -96,10 +96,6 @@ Feel free to open a PR or submit an issue.
 ---
 
 
-## 💬 Feedback
-
-If you have suggestions or want improvements, feel free to reach out!
-Happy Coding ✨🔥
 
 
 
