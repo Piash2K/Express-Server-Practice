@@ -92,7 +92,6 @@ npm run dev
 
 Contributions, issues, and feature requests are welcome!
 Feel free to open a PR or submit an issue.
-
 ---
 
 
